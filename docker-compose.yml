@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Spring Boot application service
+  app:
+    image: your-spring-boot-image:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/progress_soft?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Yoam1971
+    depends_on:
+      - mysql
+
+  # MySQL database service
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      # MySQL environment variables
+      - MYSQL_DATABASE=fx_deal
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Yoam1971
+      - MYSQL_ROOT_PASSWORD=Yoam1971
+      
