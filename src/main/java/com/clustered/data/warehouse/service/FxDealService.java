@@ -23,7 +23,7 @@ public class FxDealService {
 	 *               saved.
 	 * @return The saved FxDeal object.
 	 * @throws ExistFxDealException if a FxDeal with the same uniqueId already
-	 *                                  exists.
+	 *                              exists.
 	 */
 	public FxDealResponse saveFxDeal(FxDeal fxDeal) {
 		log.info("start saveFxDeal({})", fxDeal.getUniqueId());
@@ -50,5 +50,19 @@ public class FxDealService {
 		} finally {
 			log.info("end findFxDealByUniqueId({})", uniqueId);
 		}
+	}
+
+	/**
+	 * Delete FxDeal record.
+	 *
+	 * @param uniqe id .
+	 * @return "Fx-Deal deleted successfully".
+	 */
+	public FxDealResponse deleteFxDeal(FxDeal fxDeal) {
+		log.info("start deleteFxDeal({})", fxDeal.getUniqueId());
+		int isDeleted = fxDealRepository.deleteByUniqueId(fxDeal.getUniqueId());
+		String deleteMessage = isDeleted > 0 ? "Fx-Deal deleted successfully" : "Failed to delete Fx-Deal";
+		log.info("end deleteFxDeal({})", fxDeal.getUniqueId());
+		return new FxDealResponse(deleteMessage, fxDeal);
 	}
 }

@@ -1,52 +1,59 @@
-# Project Name
+# Clustered Data Warehouse
 
-Short description of the project.
+## Features
 
-## Table of Contents
+- **FxDeal Management**: Create and delete and retrieve FX deals with unique identifier.
+- **Simple Code**: the code is simple and easy to read.
+- **Validation**: Ensures that FX deals have valid data and is not exist in DB before they are saved.
+- **Error Handling**: Provides custom error responses for validation errors.
+- **Docker Support**: Includes MakeFile and docker-compose configuration for easy deployment.
 
-- [Project Overview](#project-overview)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+## Getting Started
 
-## Project Overview
+### Prerequisites
 
-Provide a brief overview of the project, including its purpose and main features.
+- Java 17
+- Spring boot 3.8.4
 
-## Prerequisites
+### Building the Application
 
-List any prerequisites required to build, run, or contribute to the project. Include software dependencies, tools, and frameworks.
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Run `mvn clean package` to build the application.
 
-## Installation
+### Running the Application
 
-Provide instructions for installing the project. Include steps for setting up the development environment and any required dependencies.
+#### Using Docker
 
-## Usage
+1. Ensure Docker and Docker Compose are installed and running.
+2. Navigate to the project directory.
+3. Run `docker-compose up --build` to start the application and its dependencies.
 
-Explain how to use the project. Provide examples and usage scenarios.
+#### Manually
 
-## Configuration
+1. Ensure Java 17 is installed.
+2. Navigate to the project directory.
+3. Run `java -jar target/ClusteredData` to start the application.
 
-Describe any configuration options available for the project. Include information about environment variables, configuration files, or command-line options.
+## API Documentation
 
-## Testing
+### Endpoints
 
-Explain how to run tests for the project. Provide instructions for running unit tests, integration tests, or end-to-end tests.
+- **POST /api/fxdeals**: Creates a new FX deal.
+ - Request Body: `FxDeal` object.
+ - Response: `FxDealResponse` object with a success message and the created FX deal's details.
 
-## Deployment
+- **GET /api/fxdeals/{uniqueId}**: Retrieves an FX deal by its unique identifier.
+ - Path Variable: `uniqueId` - The unique identifier of the FX deal.
+ - Response: `FxDealResponse` object with the FX deal's details or a 404 Not Found if the deal does not exist.
+ 
+ - **DELETE /api/fxdeals/{uniqueId}**: Delete an FX deal by its unique identifier.
+ - Path Variable: `uniqueId` - The unique identifier of the FX deal.
+ - Response: `Delete successfully` object FX deal's or a 404 Not Found if the deal does not exist.
 
-Provide guidance on deploying the project to production or staging environments. Include deployment scripts, configuration files, or deployment pipelines.
+### Error Handling
 
-## Contributing
-
-Explain how others can contribute to the project. Include guidelines for submitting bug reports, feature requests, or code contributions.
-
-## License
-
-Specify the project's license. Include information about permissions, restrictions, and obligations for users and contributors.
-
+- **400 Bad Request**: Returned for validation errors in the request body.
+- **404 Not Found**: Returned when customer not found.
+- **409 Conflict**: Returned when attempting to create an FX deal with a unique identifier that already exists.
+- **500 Internal Server Error**: Returned when there other issue happened.

@@ -28,11 +28,11 @@ public class FxDeal {
 	private String uniqueId;
 
 	@NotNull
-	@Size(min = 2, max = 15)
+	@Size(min = 2, max = 4)
 	private String fromCurrency;
 
 	@NotNull
-	@Size(min = 2, max = 15)
+	@Size(min = 2, max = 4)
 	private String toCurrency;
 
 	@NotNull

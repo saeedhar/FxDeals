@@ -10,5 +10,7 @@ public interface FxDealRepository extends JpaRepository<FxDeal, Long> {
 
 	Optional<FxDeal> findByUniqueId(String uniqueId);
 
+	int deleteByUniqueId(String uniqueId);
+
 	boolean existsByUniqueId(String uniqueId);
 }

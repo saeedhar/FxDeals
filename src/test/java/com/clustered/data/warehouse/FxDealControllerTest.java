@@ -55,6 +55,36 @@ public class FxDealControllerTest {
 	}
 
 	@Test
+	public void testGetFxDealByUniqueIdSuccess() {
+		String uniqueId = "fx10";
+		FxDeal fxDeal = new FxDeal();
+		fxDeal.setUniqueId(uniqueId);
+
+		when(fxDealService.findFxDealByUniqueId(uniqueId)).thenReturn(fxDeal);
+
+		ResponseEntity<FxDealResponse> responseEntity = fxDealController.getFxDealByUniqueId(uniqueId);
+
+		assertNotNull(responseEntity);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("Fx-Deal retrieved successfully", responseEntity.getBody().getMessage());
+		verify(fxDealService, times(1)).findFxDealByUniqueId(uniqueId);
+	}
+
+	@Test
+	public void testGetFxDealByUniqueIdNotFound() {
+		String uniqueId = "fx10";
+
+		when(fxDealService.findFxDealByUniqueId(uniqueId)).thenReturn(null);
+
+		ResponseEntity<FxDealResponse> responseEntity = fxDealController.getFxDealByUniqueId(uniqueId);
+
+		assertNotNull(responseEntity);
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		assertEquals("FX-Deal Not Found", responseEntity.getBody().getMessage());
+		verify(fxDealService, times(1)).findFxDealByUniqueId(uniqueId);
+	}
+
+	@Test
     public void testCreateFxDealSuccess() {
         when(fxDealService.saveFxDeal(any(FxDeal.class))).thenReturn(new FxDealResponse("Fx-Deal created successfully", fxDeal));
         BindingResult result = new MapBindingResult(new HashMap<>(), "fxDeal");
@@ -93,4 +123,35 @@ public class FxDealControllerTest {
 		assertEquals("Fx-Deal with uniqueId : fx10, already exists.", response.getBody().getMessage());
 	}
 
+	@Test
+	public void testDeleteFxDealByUniqueIdSuccess() {
+		String uniqueId = "fx10";
+		FxDeal fxDeal = new FxDeal();
+		fxDeal.setUniqueId(uniqueId);
+
+		when(fxDealService.findFxDealByUniqueId(uniqueId)).thenReturn(fxDeal);
+		when(fxDealService.deleteFxDeal(fxDeal)).thenReturn(new FxDealResponse("Fx-Deal deleted successfully", fxDeal));
+
+		ResponseEntity<FxDealResponse> responseEntity = fxDealController.deleteFxDealByUniqueId(uniqueId);
+
+		assertNotNull(responseEntity);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("Fx-Deal deleted successfully", responseEntity.getBody().getMessage());
+		verify(fxDealService, times(1)).findFxDealByUniqueId(uniqueId);
+		verify(fxDealService, times(1)).deleteFxDeal(fxDeal);
+	}
+
+	@Test
+	public void testDeleteFxDealByUniqueIdNotFound() {
+		String uniqueId = "fx10";
+
+		when(fxDealService.findFxDealByUniqueId(uniqueId)).thenReturn(null);
+
+		ResponseEntity<FxDealResponse> responseEntity = fxDealController.deleteFxDealByUniqueId(uniqueId);
+
+		assertNotNull(responseEntity);
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		assertEquals("FX-Deal Not Found", responseEntity.getBody().getMessage());
+		verify(fxDealService, times(1)).findFxDealByUniqueId(uniqueId);
+	}
 }

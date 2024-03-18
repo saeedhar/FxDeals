@@ -3,6 +3,7 @@ package com.clustered.data.warehouse.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.clustered.data.warehouse.response.FxDealResponse;
 import com.clustered.data.warehouse.service.FxDealService;
 import com.clustered.data.warehouse.validator.FxDealValidator;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +38,8 @@ public class FxDealController {
 	 *         created FxDeal's details.
 	 */
 
+	// we can use @Valid before body to auto validation depend the annotations i set
+	// it in model FxDeal
 	@PostMapping("/fxdeals")
 	public ResponseEntity<FxDealResponse> createFxDeal(@RequestBody FxDeal fxDeal, BindingResult result) {
 		log.info("Start createFxDeal({})", fxDeal.getUniqueId());
@@ -71,10 +75,32 @@ public class FxDealController {
 		log.info("Start getFxDealByUniqueId({})", uniqueId);
 		FxDeal fxDeal = fxDealService.findFxDealByUniqueId(uniqueId);
 		if (fxDeal == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FxDealResponse("Not Found", new FxDeal()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new FxDealResponse("FX-Deal Not Found", new FxDeal()));
 		}
 		FxDealResponse response = new FxDealResponse("Fx-Deal retrieved successfully", fxDeal);
 		log.info("end getFxDealByUniqueId({})", uniqueId);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * Delete an FxDeal record by its uniqueId.
+	 *
+	 * @param uniqueId The unique identifier of the FxDeal to deleted.
+	 * @return Delete successfully if the record exist else not found.
+	 */
+
+	@Transactional
+	@DeleteMapping("/fxdeals/{uniqueId}")
+	public ResponseEntity<FxDealResponse> deleteFxDealByUniqueId(@PathVariable String uniqueId) {
+		log.info("Start deleteFxDealByUniqueId({})", uniqueId);
+		FxDeal fxDeal = fxDealService.findFxDealByUniqueId(uniqueId);
+		if (fxDeal == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new FxDealResponse("FX-Deal Not Found", new FxDeal()));
+		}
+		FxDealResponse response = fxDealService.deleteFxDeal(fxDeal);
+		log.info("end deleteFxDealByUniqueId({})", uniqueId);
 		return ResponseEntity.ok(response);
 	}
 }
