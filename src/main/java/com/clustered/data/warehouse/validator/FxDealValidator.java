@@ -15,7 +15,7 @@ public class FxDealValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return FxDeal.class.equals(clazz);
-	}	
+	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
@@ -24,7 +24,7 @@ public class FxDealValidator implements Validator {
 		if (entity.getUniqueId() == null || entity.getUniqueId().isEmpty()) {
 			errors.rejectValue("uniqueId", "field.required", "uniquId is required");
 		}
-		if (entity.getUniqueId().length() <3 || entity.getUniqueId().length()>40) {
+		if (entity.getUniqueId().length() < 3 || entity.getUniqueId().length() > 40) {
 			errors.rejectValue("uniqueId", "field.invalid", "uniquId length must be > 3 and < 40 char");
 		}
 		if (entity.getFromCurrency() == null || entity.getFromCurrency().isEmpty()) {

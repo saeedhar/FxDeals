@@ -3,9 +3,11 @@ package com.clustered.data.warehouse.service;
 import org.springframework.stereotype.Service;
 
 import com.clustered.data.warehouse.exception.ExistFxDealException;
+import com.clustered.data.warehouse.exception.NotFoundException;
 import com.clustered.data.warehouse.model.FxDeal;
 import com.clustered.data.warehouse.repository.FxDealRepository;
 import com.clustered.data.warehouse.response.FxDealResponse;
+import com.clustered.data.warehouse.validator.FxDealValidator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class FxDealService {
 	 * @throws ExistFxDealException if a FxDeal with the same uniqueId already
 	 *                              exists.
 	 */
+
 	public FxDealResponse saveFxDeal(FxDeal fxDeal) {
 		log.info("start saveFxDeal({})", fxDeal.getUniqueId());
 		if (fxDealRepository.existsByUniqueId(fxDeal.getUniqueId())) {
@@ -43,13 +46,14 @@ public class FxDealService {
 	 * @return The retrieved FxDeal object.
 	 */
 
-	public FxDeal findFxDealByUniqueId(String uniqueId) {
-		log.info("start findFxDealByUniqueId({})", uniqueId);
-		try {
-			return fxDealRepository.findByUniqueId(uniqueId).orElse(null);
-		} finally {
-			log.info("end findFxDealByUniqueId({})", uniqueId);
+	public FxDealResponse getFxDealByUniqueId(String uniqueId) {
+		log.info("start getFxDealByUniqueId({})", uniqueId);
+		FxDeal fxDeal = fxDealRepository.findByUniqueId(uniqueId).orElse(null);
+		if (fxDeal == null) {
+			throw new NotFoundException(uniqueId);
 		}
+		log.info("end getFxDealByUniqueId({})", uniqueId);
+		return new FxDealResponse("Fx-Deal retrieved successfully", fxDeal);
 	}
 
 	/**
@@ -58,11 +62,16 @@ public class FxDealService {
 	 * @param uniqe id .
 	 * @return "Fx-Deal deleted successfully".
 	 */
-	public FxDealResponse deleteFxDeal(FxDeal fxDeal) {
-		log.info("start deleteFxDeal({})", fxDeal.getUniqueId());
+
+	public FxDealResponse deleteFxDealByUniqueId(String uniqueId) {
+		log.info("start deleteFxDealByUniqueId({})", uniqueId);
+		FxDeal fxDeal = fxDealRepository.findByUniqueId(uniqueId).orElse(null);
+		if (fxDeal == null) {
+			throw new NotFoundException(uniqueId);
+		}
 		int isDeleted = fxDealRepository.deleteByUniqueId(fxDeal.getUniqueId());
 		String deleteMessage = isDeleted > 0 ? "Fx-Deal deleted successfully" : "Failed to delete Fx-Deal";
-		log.info("end deleteFxDeal({})", fxDeal.getUniqueId());
+		log.info("end deleteFxDealByUniqueId({})", uniqueId);
 		return new FxDealResponse(deleteMessage, fxDeal);
 	}
 }
