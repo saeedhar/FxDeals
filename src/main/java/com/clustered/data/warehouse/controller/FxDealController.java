@@ -36,10 +36,10 @@ public class FxDealController {
 	 *               created.
 	 * @return A ResponseEntity containing the FxDealResponse object with the
 	 *         created FxDeal's details.
+	 *         
+	 * Note : we can use @Valid before body to auto validation depend the annotations i set it in model FxDeal
 	 */
 
-	// we can use @Valid before body to auto validation depend the annotations i set
-	// it in model FxDeal
 	@PostMapping("/fxdeals")
 	public ResponseEntity<FxDealResponse> createFxDeal(@RequestBody FxDeal fxDeal, BindingResult result) {
 		log.info("Start createFxDeal({})", fxDeal.getUniqueId());
