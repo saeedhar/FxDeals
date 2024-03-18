@@ -1,7 +1,7 @@
 # Define variables
 MAIN_CLASS := com.clustered.data.warehouse.ClusteredDataApplication
 BUILD_DIR := target
-JAR_NAME := clustered-data.jar
+JAR_NAME := clustered.data.warehouse-0.0.1-SNAPSHOT.jar
 
 # Define targets
 .PHONY: all clean build test run
