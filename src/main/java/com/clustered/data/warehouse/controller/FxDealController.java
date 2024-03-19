@@ -17,12 +17,8 @@ import com.clustered.data.warehouse.service.FxDealService;
 import com.clustered.data.warehouse.validator.FxDealValidator;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -39,18 +35,15 @@ public class FxDealController {
 	 *         created FxDeal's details.
 	 * 
 	 * @Note : we can use @Valid before body to auto validation depend the
-	 *         annotations i set it in model FxDeal
+	 *       annotations i set it in model FxDeal
 	 */
 
 	@PostMapping("/fxdeals")
 	public ResponseEntity<FxDealResponse> createFxDeal(@RequestBody FxDeal fxDeal, BindingResult result) {
-		log.info("start createFxDeal({})", fxDeal.getUniqueId());
 		fxDealValidator.validate(fxDeal, result);
 		if (result.hasErrors())
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		FxDealResponse response = fxDealService.saveFxDeal(fxDeal);
-		log.info("end createFxDeal({})", fxDeal.getUniqueId());
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(fxDealService.saveFxDeal(fxDeal));
 	}
 
 	/**
@@ -63,10 +56,7 @@ public class FxDealController {
 
 	@GetMapping("/fxdeals/{uniqueId}")
 	public ResponseEntity<FxDealResponse> getFxDealByUniqueId(@PathVariable String uniqueId) {
-		log.info("start controller getFxDealByUniqueId({})", uniqueId);
-		FxDealResponse response = fxDealService.getFxDealByUniqueId(uniqueId);
-		log.info("end controller getFxDealByUniqueId({})", uniqueId);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(fxDealService.getFxDealByUniqueId(uniqueId));
 	}
 
 	/**
@@ -79,9 +69,6 @@ public class FxDealController {
 	@Transactional
 	@DeleteMapping("/fxdeals/{uniqueId}")
 	public ResponseEntity<FxDealResponse> deleteFxDealByUniqueId(@PathVariable String uniqueId) {
-		log.info("start controller deleteFxDealByUniqueId({})", uniqueId);
-		FxDealResponse response = fxDealService.deleteFxDealByUniqueId(uniqueId);
-		log.info("end controller deleteFxDealByUniqueId({})", uniqueId);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(fxDealService.deleteFxDealByUniqueId(uniqueId));
 	}
 }
