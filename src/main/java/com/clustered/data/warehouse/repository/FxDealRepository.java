@@ -8,9 +8,11 @@ import com.clustered.data.warehouse.model.FxDeal;
 
 public interface FxDealRepository extends JpaRepository<FxDeal, Long> {
 
+	boolean existsByUniqueId(String uniqueId);
+
 	Optional<FxDeal> findByUniqueId(String uniqueId);
 
 	int deleteByUniqueId(String uniqueId);
 
-	boolean existsByUniqueId(String uniqueId);
+
 }

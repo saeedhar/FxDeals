@@ -1,5 +1,5 @@
 # Define variables
-MAIN_CLASS := com.clustered.data.warehouse.ClusteredDataApplication
+MAIN_CLASS := com.clustered.data.warehouse.FxDealsApplication
 BUILD_DIR := target
 JAR_NAME := clustered.data.warehouse-0.0.1-SNAPSHOT.jar
 
@@ -20,3 +20,5 @@ test: build
 
 run: build
 	java -jar $(BUILD_DIR)/$(JAR_NAME)
+
+

@@ -5,13 +5,14 @@ import java.sql.Timestamp;
 
 import com.clustered.data.warehouse.model.FxDeal;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 public class FxDealResponse {
 	private String message;
-	private Long id;
 	private String uniqueId;
+	private Long id;
 	private String fromCurrency;
 	private String toCurrency;
 	private BigDecimal dealAmount;
