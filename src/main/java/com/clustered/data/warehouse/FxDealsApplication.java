@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ClusteredDataApplication {
+public class FxDealsApplication {
 
+	
 	public static void main(String[] args) {
-		SpringApplication.run(ClusteredDataApplication.class, args);
+		SpringApplication.run(FxDealsApplication.class, args);
 	}
 
 }
